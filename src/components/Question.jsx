@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { quesAnalyzer } from "../utils/quesAnalyzer";
 import "./questions.css";
+import Buddy from "../assets/buddy.png";
 
 const Question = () => {
   const [questionPara, setQuestionPara] = useState("");
   const [questions, setQuestions] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const handleInput = (e) => {
     setQuestionPara(e.target.value);
@@ -12,13 +14,12 @@ const Question = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       const textResponse = await quesAnalyzer(questionPara);
       if (textResponse) {
-        // Log the response to see it in the console.
         console.log("Received text response:", textResponse);
 
-        // Extract questions and answers assuming a specific format.
         const questionsStartIndex =
           textResponse.indexOf(
             "Here are the top 5 questions extracted from the paragraph you provided:"
@@ -39,44 +40,43 @@ const Question = () => {
     } catch (error) {
       console.error("API call failed:", error);
     }
+    setLoading(false);
   };
 
   return (
     <div className="full_view">
       {/* <h2>Generate Questions with Paragraphs</h2> */}
       <div className="text_area">
-        <form onSubmit={handleSubmit}>
-          <textarea
-            type="text"
-            value={questionPara}
-            onChange={handleInput}
-            placeholder="Paste your Paragraph.."
-          />
-          <button className="generate_button" type="submit">
-            Generate
-          </button>
-        </form>
+        <textarea
+          type="text"
+          value={questionPara}
+          onChange={handleInput}
+          placeholder="Paste your Paragraph.."
+        />
+        <button className="generate_button" onClick={handleSubmit}>
+          {loading ? "LOADING..." : "Generate"}
+        </button>
       </div>
-      <div className="question_answer">
-        {/* {questions.length > 0 && (
-          <div>
-            {questions.map((item, index) => (
-              <div key={index}>
-                <h4>
-                  Question {index + 1}: {item.question}
-                </h4>
-                <p>Answer: {item.answer}</p>
-              </div>
-            ))}
-          </div>
-        )} */}
-        <h4>question</h4>
-        <p>answer</p>
-        <h4>question</h4>
-        <p>answer</p>
-        <h4>question</h4>
-        <p>answer</p>
-      </div>
+      {/* <div className="question_answer"> */}
+      {questions.length > 0 ? (
+        <div className="question_answer">
+          {questions.map((item, index) => (
+            <div key={index} className="single_tab">
+              <h4>
+                Question {index + 1}: {item.question}
+              </h4>
+              <p>Answer: {item.answer}</p>
+              {/* <hr /> */}
+            </div>
+          ))}
+        </div>
+      ) : (
+        // <div className="question_answer">
+        <img className="buddy" src={Buddy} height="600px" width="auto" />
+        // </div>
+      )}
+
+      {/* </div> */}
     </div>
   );
 };

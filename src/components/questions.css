@@ -1,20 +1,91 @@
 .full_view {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   height: 100vh;
+  gap: 2rem;
+  padding: 0px 20px;
 }
 
 .text_area {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex: 1;
+  border: 1px solid white;
+  border-radius: 4px;
+  max-height: 60vh;
+  overflow: auto;
+  padding: 10px 0px 10px 0px;
+}
+.question_answer {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  /* justify-content: space-between; */
+  /* gap: 1.6rem; */
+  flex: 1;
+  border: 1px solid white;
+  border-radius: 4px;
+  max-height: 55vh;
+  overflow: auto;
+  /* scrollbar-width: thin;
+  scrollbar-color: #0066cc; */
+}
+.question_answer::-webkit-scrollbar {
+  display: none;
 }
 
-textarea[type="text" i] {
-  padding-block: 1px;
-  padding-inline: 2px;
-  min-height: 10rem;
-  min-width: 40rem;
+.text_area textarea {
+  width: 90%;
+  min-height: 250px;
   height: auto;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+  resize: none;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #333;
+  font-family: "Ubuntu Sans", sans-serif;
+  overflow-y: auto;
+
+  /* background-color: #fff; */
+}
+.text_area textarea::-webkit-scrollbar {
+  display: none;
+}
+
+.text_area textarea:focus {
+  border-color: #0066cc;
+  outline: none;
+  /* font-family: "Ubuntu Sans", sans-serif; */
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2), 0 0 5px rgba(0, 102, 204, 0.5);
+}
+.generate_button {
+  width: 200px;
+  height: 30px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #799eef;
+  background-color: white;
+  border: none;
+  border-radius: 4px;
+  font-family: "Ubuntu Sans", sans-serif;
+}
+.single_tab {
+  background-color: white;
+  margin: 3px 10px 0px 10px;
+  display: flex;
+  flex-direction: column;
+  min-width: 80%;
+  width: auto;
+  border-radius: 4px;
+}
+.buddy {
+  filter: drop-shadow(2px 2px 4px yellow);
+  /* max-height: 55vh; */
 }
