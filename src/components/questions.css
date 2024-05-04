@@ -1,0 +1,20 @@
+.full_view {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.text_area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+textarea[type="text" i] {
+  padding-block: 1px;
+  padding-inline: 2px;
+  min-height: 10rem;
+  min-width: 40rem;
+  height: auto;
+}
