@@ -45,19 +45,19 @@ const Question = () => {
 
   return (
     <div className="full_view">
-      {/* <h2>Generate Questions with Paragraphs</h2> */}
-      <div className="text_area">
+      <div
+        className={questions.length > 0 ? "text_area collapsed" : "text_area"}
+      >
         <textarea
           type="text"
           value={questionPara}
           onChange={handleInput}
-          placeholder="Paste your Paragraph.."
+          placeholder="Paste your Paragraph here to get your questions.."
         />
         <button className="generate_button" onClick={handleSubmit}>
           {loading ? "LOADING..." : "Generate"}
         </button>
       </div>
-      {/* <div className="question_answer"> */}
       {questions.length > 0 ? (
         <div className="question_answer">
           {questions.map((item, index) => (
@@ -66,17 +66,12 @@ const Question = () => {
                 Question {index + 1}: {item.question}
               </h4>
               <p>Answer: {item.answer}</p>
-              {/* <hr /> */}
             </div>
           ))}
         </div>
       ) : (
-        // <div className="question_answer">
         <img className="buddy" src={Buddy} height="600px" width="auto" />
-        // </div>
       )}
-
-      {/* </div> */}
     </div>
   );
 };

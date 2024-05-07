@@ -7,7 +7,7 @@ function App() {
     <>
       {/* <h1>Hello langchain</h1> */}
       {/* <JarvisChef /> */}
-      <Question/>
+      <Question />
     </>
   );
 }
