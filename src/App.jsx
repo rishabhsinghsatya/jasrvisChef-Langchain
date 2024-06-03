@@ -1,6 +1,6 @@
 import "./App.css";
 import Question from "./components/Question";
-// import JarvisChef from "./components/JarvisChef";
+import JarvisChef from "./components/JarvisChef";
 
 function App() {
   return (

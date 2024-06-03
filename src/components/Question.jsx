@@ -1,18 +1,24 @@
 import React, { useState } from "react";
-import { quesAnalyzer } from "../utils/quesAnalyzer";
+import { mcqAnalyzer, quesAnalyzer } from "../utils/quesAnalyzer";
 import "./questions.css";
 import Buddy from "../assets/buddy.png";
+import ButtonList from "./ButtonList";
 
 const Question = () => {
-  const [questionPara, setQuestionPara] = useState("");
-  const [questions, setQuestions] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [questionPara, setQuestionPara] = useState("");
+
+  //subjective questions
+  const [questions, setQuestions] = useState([]);
+
+  //objective questions
+  const [mcq, setMcq] = useState([]);
 
   const handleInput = (e) => {
     setQuestionPara(e.target.value);
   };
 
-  const handleSubmit = async (e) => {
+  const generateQuestions = async (e) => {
     e.preventDefault();
     setLoading(true);
     try {
@@ -43,31 +49,48 @@ const Question = () => {
     setLoading(false);
   };
 
+  const generateMCQ = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    console.log(questionPara);
+    const mcq_response = await mcqAnalyzer(questionPara);
+    console.log(mcq_response);
+    setMcq(mcq_response);
+    setLoading(false);
+  };
   return (
     <div className="full_view">
-      <div
-        className={questions.length > 0 ? "text_area collapsed" : "text_area"}
-      >
+      <div className="text_area">
         <textarea
           type="text"
           value={questionPara}
           onChange={handleInput}
           placeholder="Paste your Paragraph here to get your questions.."
         />
-        <button className="generate_button" onClick={handleSubmit}>
-          {loading ? "LOADING..." : "Generate"}
-        </button>
+        <div className="button_list">
+          <button className="generate_button" onClick={generateQuestions}>
+            {loading ? "LOADING..." : "Questions"}
+          </button>
+          <button className="generate_button" onClick={generateMCQ}>
+            {loading ? "LOADING..." : "MCQs"}
+          </button>
+          <button className="generate_button" onClick={generateMCQ}>
+            {loading ? "LOADING..." : "Hinglish"}
+          </button>
+        </div>
+        {/* <ButtonList /> */}
       </div>
-      {questions.length > 0 ? (
+      {mcq.length > 0 ? (
         <div className="question_answer">
-          {questions.map((item, index) => (
+          {/* {questions.map((item, index) => (
             <div key={index} className="single_tab">
               <h4>
                 Question {index + 1}: {item.question}
               </h4>
               <p>Answer: {item.answer}</p>
             </div>
-          ))}
+          ))} */}
+          <pre>{mcq}</pre>
         </div>
       ) : (
         <img className="buddy" src={Buddy} height="600px" width="auto" />
