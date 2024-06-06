@@ -71,3 +71,38 @@ export const mcqAnalyzer = async (questionPara) => {
     throw error;
   }
 };
+
+//Hinglish analyzer
+
+export const hinglishAnalyzer = async (questionPara) => {
+  try {
+    const SECRET_KEY = import.meta.env.VITE_OPEN_AI_KEY;
+    const chat = new ChatOpenAI({
+      openAIApiKey: SECRET_KEY,
+    });
+
+    const systemMessagePrompt = SystemMessagePromptTemplate.fromTemplate(
+      "i want you to translate the following text into The language Hinglish involves a hybrid mixing of Hindi and English within conversations. Which is a colloquially used way of typing in north india. Some English words are mixed with hindi words based on common usage and latin script is used."
+    );
+
+    const humanMessagePrompt =
+      HumanMessagePromptTemplate.fromTemplate("{asked_question}");
+    const chatPrompt = ChatPromptTemplate.fromMessages([
+      systemMessagePrompt,
+      humanMessagePrompt,
+    ]);
+    const formattedChatPrompt = await chatPrompt.formatMessages({
+      asked_question: questionPara,
+    });
+    const response = await chat.invoke(formattedChatPrompt);
+    if (response && response.content) {
+      console.log(response.content);
+      return response.content;
+    } else {
+      throw new Error("Unexpected response from the API");
+    }
+  } catch (error) {
+    console.error("Error in askJarvisChef:", error);
+    throw error;
+  }
+};
