@@ -20,7 +20,7 @@ const JarvisChef = () => {
     <>
       {/* <h1>Ask Recipe</h1> */}
       <form onSubmit={handleSubmit}>
-        <input
+        <textarea
           type="text"
           value={recipeMessage}
           onChange={handleInputChange}

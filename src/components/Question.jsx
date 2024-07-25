@@ -6,20 +6,21 @@ import {
 } from "../utils/quesAnalyzer";
 import "./questions.css";
 import Buddy from "../assets/buddy.png";
-import ButtonList from "./ButtonList";
 
 const Question = () => {
   const [loading, setLoading] = useState(false);
   const [questionPara, setQuestionPara] = useState("");
+  const [activeAnalysis, setActiveAnalysis] = useState(""); // Track active analysis type
 
-  //subjective questions
+  // subjective questions
   const [questions, setQuestions] = useState([]);
 
-  //objective questions
+  // objective questions
   const [mcq, setMcq] = useState([]);
 
-  //hinglish paragraph
+  // hinglish paragraph
   const [hinglish, setHinglish] = useState("");
+
   const handleInput = (e) => {
     setQuestionPara(e.target.value);
   };
@@ -27,11 +28,11 @@ const Question = () => {
   const generateQuestions = async (e) => {
     e.preventDefault();
     setLoading(true);
+    setActiveAnalysis("questions");
     try {
       const textResponse = await quesAnalyzer(questionPara);
       if (textResponse) {
         console.log("Received text response:", textResponse);
-
         const questionsStartIndex =
           textResponse.indexOf(
             "Here are the top 5 questions extracted from the paragraph you provided:"
@@ -58,21 +59,30 @@ const Question = () => {
   const generateMCQ = async (e) => {
     e.preventDefault();
     setLoading(true);
-    console.log(questionPara);
-    const mcq_response = await mcqAnalyzer(questionPara);
-    console.log(mcq_response);
-    setMcq(mcq_response);
+    setActiveAnalysis("mcq");
+    try {
+      const mcq_response = await mcqAnalyzer(questionPara);
+      console.log(mcq_response);
+      setMcq(mcq_response);
+    } catch (error) {
+      console.error("API call failed:", error);
+    }
     setLoading(false);
   };
 
   const generateHinglish = async (e) => {
     e.preventDefault();
     setLoading(true);
-    console.log(questionPara);
-    const hinglish_response = await hinglishAnalyzer(questionPara);
-    setHinglish(hinglish_response);
+    setActiveAnalysis("hinglish");
+    try {
+      const hinglish_response = await hinglishAnalyzer(questionPara);
+      setHinglish(hinglish_response);
+    } catch (error) {
+      console.error("API call failed:", error);
+    }
     setLoading(false);
   };
+
   return (
     <div className="full_view">
       <div className="text_area">
@@ -83,49 +93,46 @@ const Question = () => {
           placeholder="Paste your Paragraph here to get your questions..."
         />
         <div className="button_list" style={{ display: "flex", gap: "1rem" }}>
-          <button className="generate_button" onClick={generateQuestions}>
-            {loading ? "LOADING..." : "QUESTIONS"}
+          <button className="generate_button" onClick={generateQuestions} disabled={loading && activeAnalysis === "questions"}>
+            {loading && activeAnalysis === "questions" ? "LOADING..." : "QUESTIONS"}
           </button>
-          <button className="generate_button" onClick={generateMCQ}>
-            {loading ? "LOADING..." : "MCQs"}
+          <button className="generate_button" onClick={generateMCQ} disabled={loading && activeAnalysis === "mcq"}>
+            {loading && activeAnalysis === "mcq" ? "LOADING..." : "MCQs"}
           </button>
-          <button className="generate_button" onClick={generateHinglish}>
-            {loading
-              ? // (
-                //   <div class="lds-ellipsis">
-                //     <div></div>
-                //     <div></div>
-                //     <div></div>
-                //     <div></div>
-                //   </div>
-                // )
-                "Loading"
-              : "HINGLISH"}
+          <button className="generate_button" onClick={generateHinglish} disabled={loading && activeAnalysis === "hinglish"}>
+            {loading && activeAnalysis === "hinglish" ? "LOADING..." : "HINGLISH"}
           </button>
         </div>
-        {/* <ButtonList /> */}
       </div>
-      {hinglish.length > 0 ? (
-        <div className="question_answer">
-          {/* {questions.map((item, index) => (
-            <div key={index} className="single_tab">
-              <h4>
-                Question {index + 1}: {item.question}
-              </h4>
-              <p>Answer: {item.answer}</p>
-            </div>
-          ))} */}
-          <div>{hinglish}</div>
-        </div>
-      ) : (
-        <img className="buddy" src={Buddy} height="600px" width="auto" />
-      )}
+      <div className="question_answer">
+        {activeAnalysis === "questions" && questions.length > 0 && (
+          <div>
+            {questions.map((item, index) => (
+              <div key={index} className="single_tab">
+                <h4>Question {index + 1}: {item.question}</h4>
+                <p>Answer: {item.answer}</p>
+              </div>
+            ))}
+          </div>
+        )}
+        {activeAnalysis === "mcq" && mcq.length > 0 && (
+          <div>
+            <div>{mcq}</div>
+          </div>
+        )}
+        {activeAnalysis === "hinglish" && hinglish.length > 0 && (
+          <div>
+            <div>{hinglish}</div>
+          </div>
+        )}
+        {!(activeAnalysis === "questions" && questions.length > 0) &&
+         !(activeAnalysis === "mcq" && mcq.length > 0) &&
+         !(activeAnalysis === "hinglish" && hinglish.length > 0) && (
+          <img className="buddy" src={Buddy} height="600px" width="auto" />
+        )}
+      </div>
     </div>
   );
 };
 
 export default Question;
-//#1d0641
-//#799eef
-//linear-gradient(to right, #799eef, #18fa0c)
-//final (linear-gradient(to right, #1d0641, #799eef))

@@ -12,7 +12,9 @@ export const askJarvisChef = async (recipeMessage) => {
       openAIApiKey: SECRET_KEY,
     });
     const systemMessagePrompt = SystemMessagePromptTemplate.fromTemplate(
-      "Your name is Jarvis. You are a Master Chef so first introduce yourself as Jarvis The Master Chef. You can write any type of food recipe which can be made in 5 minutes. You are only allowed to answer food-related queries. If you don't know the answer then tell I don't know the answer."
+      // "Your name is Jarvis. You are a Master Chef so first introduce yourself as Jarvis The Master Chef. You can write any type of food recipe which can be made in 5 minutes. You are only allowed to answer food-related queries. If you don't know the answer then tell I don't know the answer."
+      // "Your  name is HinglishTeacher. you ara a Hinglish analyzer so first introduce yourself as a Hinglish Teacher The Hinglish Analyzer. i want you to translate the following text into The language Hinglish involves a hybrid mixing of Hindi and English within conversations. Which is a colloquially used way of typing in north india. Some English words are mixed with hindi words based on common usage and latin script is used."
+      "i want you to translate the following text into The language Hinglish involves a hybrid mixing of Hindi and English within conversations. Which is a colloquially used way of typing in north india. Some English words are mixed with hindi words based on common usage and latin script is used."
     );
     const humanMessagePrompt =
       HumanMessagePromptTemplate.fromTemplate("{asked_recipe}");

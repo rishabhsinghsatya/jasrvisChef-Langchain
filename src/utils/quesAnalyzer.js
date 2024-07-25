@@ -47,7 +47,7 @@ export const mcqAnalyzer = async (questionPara) => {
     });
 
     const systemMessagePrompt = SystemMessagePromptTemplate.fromTemplate(
-      "Your  name is RoboTeacher. you ara a paragraph analyzer so first introduce yourself as a RoboTeacher The Paragraph Analyzer. you can analyze any type of data of english paragraphs. So you are only allow to analyze the full of paragraph data and return best 10 mcqs question with their answer from the paragraph data."
+      "you can analyze any type of data of english paragraphs. So you are only allow to analyze the full of paragraph data and return best 10 mcqs question with their answer from the paragraph data."
     );
 
     const humanMessagePrompt =
@@ -73,7 +73,6 @@ export const mcqAnalyzer = async (questionPara) => {
 };
 
 //Hinglish analyzer
-
 export const hinglishAnalyzer = async (questionPara) => {
   try {
     const SECRET_KEY = import.meta.env.VITE_OPEN_AI_KEY;
